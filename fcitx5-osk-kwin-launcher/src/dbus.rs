@@ -116,9 +116,9 @@ pub mod client {
     }
 
     #[zbus::proxy(
-        default_service = "fyi.fortime.Fcitx5Osk.KwinLauncher",
-        default_path = "/fyi/fortime/Fcitx5Osk/KwinLauncher/Controller",
-        interface = "fyi.fortime.Fcitx5Osk.KwinLauncher.Controller1"
+        default_service = "xyz.enoki.fcitx5.osk.KwinLauncher",
+        default_path = "/xyz/enoki/fcitx5/osk/KwinLauncher/Controller",
+        interface = "xyz.enoki.fcitx5.osk.KwinLauncher.Controller1"
     )]
     pub trait Fcitx5OskKwinLauncherControllerService {
         #[tracing::instrument(level = "debug", skip(self), err, ret)]
@@ -164,7 +164,7 @@ pub mod server {
         }
     }
 
-    #[zbus::interface(name = "fyi.fortime.Fcitx5Osk.KwinLauncher.Controller1")]
+    #[zbus::interface(name = "xyz.enoki.fcitx5.osk.KwinLauncher.Controller1")]
     impl Fcitx5OskKwinLauncherService {
         // zbus::interface doesn't support type alias in the response
         #[tracing::instrument(level = "debug", skip(self), err, ret)]
@@ -182,5 +182,5 @@ pub mod server {
     }
 }
 
-pub const SERVICE_NAME: &str = "fyi.fortime.Fcitx5Osk.KwinLauncher";
-pub const CONTROLLER_OBJECT_PATH: &str = "/fyi/fortime/Fcitx5Osk/KwinLauncher/Controller";
+pub const SERVICE_NAME: &str = "xyz.enoki.fcitx5.osk.KwinLauncher";
+pub const CONTROLLER_OBJECT_PATH: &str = "/xyz/enoki/fcitx5/osk/KwinLauncher/Controller";

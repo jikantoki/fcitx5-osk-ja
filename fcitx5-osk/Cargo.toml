@@ -1,11 +1,16 @@
 [package]
 name = "fcitx5-osk"
+autobins = false
 authors.workspace = true
 version.workspace = true
 edition.workspace = true
 license-file.workspace = true
 keywords.workspace = true
 repository.workspace = true
+
+[[bin]]
+name = "fcitx5-osk-ja"
+path = "src/main.rs"
 
 [dependencies]
 fcitx5-osk-common.workspace = true

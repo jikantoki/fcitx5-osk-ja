@@ -23,10 +23,10 @@ mod server {
         }
     }
 
-    #[zbus::interface(name = "fyi.fortime.Fcitx5OskKeyHelper.Controller1")]
+    #[zbus::interface(name = "xyz.enoki.fcitx5.osk.KeyHelper.Controller1")]
     impl Fcitx5OskKeyHelperControllerService {
-        const SERVICE_NAME: &'static str = "fyi.fortime.Fcitx5OskKeyHelper";
-        const OBJECT_PATH: &'static str = "/fyi/fortime/Fcitx5OskKeyHelper/Controller";
+        const SERVICE_NAME: &'static str = "xyz.enoki.fcitx5.osk.KeyHelper";
+        const OBJECT_PATH: &'static str = "/xyz/enoki/fcitx5/osk/KeyHelper/Controller";
 
         fn next_serial(&mut self) -> u64 {
             let old_serial = self.serial;

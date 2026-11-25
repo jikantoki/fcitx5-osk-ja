@@ -29,7 +29,7 @@ mod widget;
 mod window;
 
 #[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
+#[command(name = "fcitx5-osk-ja", version, about, long_about = None)]
 struct Args {
     #[command(subcommand)]
     command: Command,
@@ -115,7 +115,7 @@ fn run(args: Args) -> Result<()> {
             None
         };
         buf.map(|mut b| {
-            b.push("fcitx5-osk/config.toml");
+            b.push("fcitx5-osk-ja/config.toml");
             b
         })
     };

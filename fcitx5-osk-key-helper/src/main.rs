@@ -12,14 +12,14 @@ mod dbus;
 mod keyboard;
 
 #[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
+#[command(name = "fcitx5-osk-ja-key-helper", version, about, long_about = None)]
 struct Args {
     /// The path of config file.
     #[arg(
         short,
         long,
         value_name = "PATH",
-        default_value = "/etc/fcitx5-osk-key-helper/config.toml"
+        default_value = "/etc/fcitx5-osk-ja-key-helper/config.toml"
     )]
     config: PathBuf,
 }

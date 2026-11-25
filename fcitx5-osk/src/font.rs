@@ -6,7 +6,7 @@ use std::{
 use iced::Font;
 
 static FONTS: OnceLock<Mutex<HashMap<String, &'static str>>> = OnceLock::new();
-static DEFAULT_NERD_FONT: Mutex<Font> = Mutex::new(Font::with_name("NotoSerif NF"));
+static DEFAULT_NERD_FONT: Mutex<Font> = Mutex::new(Font::with_name("Symbols Nerd Font"));
 
 pub static DEFAULT_NERD_FONT_ID: &str = "fcitx5 osk nerd";
 

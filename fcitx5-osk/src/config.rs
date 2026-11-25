@@ -25,22 +25,22 @@ pub struct Config {
     #[serde(default)]
     log_directives: Vec<String>,
 
-    /// Folders storing layout toml files. If not set, the program will search toml files in `fcitx5-osk/layouts` under `$XDG_CONFIG_DIRS` and `$XDG_CONFIG_HOME`. The latter one has higher priority.
+    /// Folders storing layout toml files. If not set, the program will search toml files in `fcitx5-osk-ja/layouts` under `$XDG_CONFIG_DIRS` and `$XDG_CONFIG_HOME`. The latter one has higher priority.
     #[getset(get = "pub")]
     #[serde(default)]
     key_area_layout_folders: Vec<PathBuf>,
 
-    /// Folders storing key set toml files. If not set, the program will search toml files in `fcitx5-osk/key_sets` under `$XDG_CONFIG_DIRS` and `$XDG_CONFIG_HOME`. The latter one has higher priority.
+    /// Folders storing key set toml files. If not set, the program will search toml files in `fcitx5-osk-ja/key_sets` under `$XDG_CONFIG_DIRS` and `$XDG_CONFIG_HOME`. The latter one has higher priority.
     #[getset(get = "pub")]
     #[serde(default)]
     key_set_folders: Vec<PathBuf>,
 
-    /// Folders storing theme toml files. If not set, the program will search toml files in `fcitx5-osk/themes` under `$XDG_CONFIG_DIRS` and `$XDG_CONFIG_HOME`. The latter one has higher priority.
+    /// Folders storing theme toml files. If not set, the program will search toml files in `fcitx5-osk-ja/themes` under `$XDG_CONFIG_DIRS` and `$XDG_CONFIG_HOME`. The latter one has higher priority.
     #[getset(get = "pub")]
     #[serde(default)]
     theme_folders: Vec<PathBuf>,
 
-    /// Folders storing custom action toml files. If not set, the program will search toml files in `fcitx5-osk/custom_actions` under `$XDG_CONFIG_DIRS` and `$XDG_CONFIG_HOME`. The latter one has higher priority.
+    /// Folders storing custom action toml files. If not set, the program will search toml files in `fcitx5-osk-ja/custom_actions` under `$XDG_CONFIG_DIRS` and `$XDG_CONFIG_HOME`. The latter one has higher priority.
     #[getset(get = "pub")]
     #[serde(default)]
     custom_action_folders: Vec<PathBuf>,
@@ -316,7 +316,9 @@ impl AsMut<Config> for ConfigManager {
 )]
 pub enum Placement {
     #[default]
+    #[strum(to_string = "ドック")]
     Dock,
+    #[strum(to_string = "フロート")]
     Float,
 }
 
@@ -325,8 +327,11 @@ pub enum Placement {
 )]
 pub enum IndicatorDisplay {
     #[default]
+    #[strum(to_string = "自動")]
     Auto,
+    #[strum(to_string = "常に表示")]
     AlwaysOn,
+    #[strum(to_string = "常に隠す")]
     AlwaysOff,
 }
 
@@ -335,7 +340,10 @@ pub enum IndicatorDisplay {
 )]
 pub enum QuickActionBarState {
     #[default]
+    #[strum(to_string = "オフ")]
     Off,
+    #[strum(to_string = "オン")]
     On,
+    #[strum(to_string = "切り替え")]
     Toggle,
 }

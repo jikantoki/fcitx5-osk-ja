@@ -70,7 +70,7 @@ impl WindowSettings {
     pub fn new(size: Size, placement: Placement) -> Self {
         Self {
             // TODO don't hardcode
-            application_id: "fcitx5-osk".to_string(),
+            application_id: "fcitx5-osk-ja".to_string(),
             size,
             placement,
             position: Point::ORIGIN,

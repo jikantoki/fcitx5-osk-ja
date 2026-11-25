@@ -229,7 +229,7 @@ fn xdg_config_folders_if_empty<'a>(dir_paths: &'a [PathBuf], sub_dir: &str) -> C
             .filter(|p| !p.is_empty())
             .map(|p| {
                 let mut buf = PathBuf::from(p);
-                buf.push("fcitx5-osk");
+                buf.push("fcitx5-osk-ja");
                 buf.push(sub_dir);
                 buf
             })

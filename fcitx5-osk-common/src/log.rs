@@ -15,7 +15,7 @@ impl LogGuard {
     pub fn new() -> Result<Self> {
         Ok(Self {
             #[cfg(feature = "console-subscriber")]
-            socket: NamedTempFile::with_prefix("fcitx5-osk-tokio-console-")?.into_temp_path(),
+            socket: NamedTempFile::with_prefix("fcitx5-osk-ja-tokio-console-")?.into_temp_path(),
         })
     }
 }

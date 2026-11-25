@@ -32,7 +32,7 @@ kconfig_add_kcfg_files(fcitx5osk_SOURCES
     fcitx5oskconfig.kcfgc
 )
 
-qt_add_dbus_interface(fcitx5osk_SOURCES "fyi.fortime.Fcitx5Osk.xml" fcitx5oskdbus)
+qt_add_dbus_interface(fcitx5osk_SOURCES "xyz.enoki.fcitx5.osk.xml" fcitx5oskdbus)
 
 add_library(fcitx5osk MODULE ${fcitx5osk_SOURCES})
 target_link_libraries(fcitx5osk PRIVATE

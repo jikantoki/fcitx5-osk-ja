@@ -28,9 +28,9 @@ pub mod client {
     use crate::dbus::entity::{Display, Socket, WindowManagerMode};
 
     #[zbus::proxy(
-        default_service = "fyi.fortime.Fcitx5Osk",
-        default_path = "/fyi/fortime/Fcitx5Osk/Controller",
-        interface = "fyi.fortime.Fcitx5Osk.Controller1"
+        default_service = "xyz.enoki.fcitx5.osk",
+        default_path = "/xyz/enoki/fcitx5/osk/Controller",
+        interface = "xyz.enoki.fcitx5.osk.Controller1"
     )]
     pub trait Fcitx5OskControllerService {
         #[tracing::instrument(level = "debug", skip(self), err, ret)]
@@ -81,9 +81,9 @@ pub mod client {
     }
 
     #[zbus::proxy(
-        default_service = "fyi.fortime.Fcitx5OskKeyHelper",
-        default_path = "/fyi/fortime/Fcitx5OskKeyHelper/Controller",
-        interface = "fyi.fortime.Fcitx5OskKeyHelper.Controller1"
+        default_service = "xyz.enoki.fcitx5.osk.KeyHelper",
+        default_path = "/xyz/enoki/fcitx5/osk/KeyHelper/Controller",
+        interface = "xyz.enoki.fcitx5.osk.KeyHelper.Controller1"
     )]
     pub trait Fcitx5OskKeyHelperControllerService {
         #[tracing::instrument(level = "debug", skip(self), err, ret)]
@@ -113,5 +113,5 @@ pub mod client {
     }
 }
 
-pub const SERVICE_NAME: &str = "fyi.fortime.Fcitx5Osk";
-pub const CONTROLLER_OBJECT_PATH: &str = "/fyi/fortime/Fcitx5Osk/Controller";
+pub const SERVICE_NAME: &str = "xyz.enoki.fcitx5.osk";
+pub const CONTROLLER_OBJECT_PATH: &str = "/xyz/enoki/fcitx5/osk/Controller";

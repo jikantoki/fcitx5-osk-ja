@@ -1,471 +1,285 @@
-# Fcitx 5 Osk
+# Fcitx 5 Osk JA（fcitx5-osk-ja）
 
-## Description
+Fcitx 5 と連携して動くオンスクリーンキーボード（画面キーボード）の日本語環境向け派生版です。KDE Plasma（KWin）の Wayland 環境、特にタブレット・2 in 1 PC での利用を想定しています。
 
-Fcitx 5 Osk is an on-screen keyboard designed to work with Fcitx 5. It provides a virtual keyboard for inputting text across various environments.
+- **オリジナル**: [fortime/fcitx5-osk](https://github.com/fortime/fcitx5-osk)（作者: fortime さん / MIT License）
+- オリジナルの英語版 README は [README_ORIGINAL.md](README_ORIGINAL.md) にあります
+- 変更履歴（オリジナル分）は [CHANGELOG.md](CHANGELOG.md) を参照してください
 
-***I have only tested it on kwin6 wayland/xwayland.***
+## オリジナルからの変更点
 
-* landscape view
-<img width="800" alt="landscape" src="https://github.com/user-attachments/assets/7514f98a-256b-42ad-be48-c3060aa59ab9" />
+- **JIS配列（日本語109キーボード風）を内蔵**し、横画面の既定レイアウトにした
+- **Enter・矢印キーなどが豆腐（□）になる問題を解消**（アイコン用フォントを Symbols Nerd Font に変更し、deb に同梱）
+- **Ubuntu / Kubuntu 用のインストールスクリプト**を追加（deb パッケージを作って apt でインストール、アップデートにも対応）
+- **アプリ名を `fcitx5-osk-ja` に変更**し、オリジナルと同時にインストールしても競合しないようにした
+- **アイコンを新しいデザインに変更**
 
-* portrait view
-<img width="500" alt="portrait" src="https://github.com/user-attachments/assets/af88ef5e-f195-417e-a7e1-d31856fe6fb4" />
+### オリジナルとの名前の対応
 
-* custom actions, combo mode and repeat mode
-<video src="https://github.com/user-attachments/assets/62b24bad-22d8-407b-97f1-f26d4dd8b812"></video>
+| 項目                               | オリジナル                       | この版（JA）                        |
+| ---------------------------------- | -------------------------------- | ----------------------------------- |
+| キーボード本体                     | `fcitx5-osk`                     | `fcitx5-osk-ja`                     |
+| Key Helper                         | `fcitx5-osk-key-helper`          | `fcitx5-osk-ja-key-helper`          |
+| KWin ランチャー                    | `fcitx5-osk-kwin-launcher`       | `fcitx5-osk-ja-kwin-launcher`       |
+| systemd サービス                   | `fcitx5-osk-key-helper.service`  | `fcitx5-osk-ja-key-helper.service`  |
+| D-Bus 名                           | `fyi.fortime.Fcitx5Osk` など     | `xyz.enoki.fcitx5.osk` など         |
+| 仮想キーボード名（KDE の設定画面） | Fcitx 5 Osk Kwin Launcher        | Fcitx 5 Osk JA Kwin Launcher        |
+| ユーザー設定フォルダ               | `~/.config/fcitx5-osk/`          | `~/.config/fcitx5-osk-ja/`          |
+| データフォルダ                     | `/usr/(local/)share/fcitx5-osk/` | `/usr/(local/)share/fcitx5-osk-ja/` |
+| Key Helper の設定                  | `/etc/fcitx5-osk-key-helper/`    | `/etc/fcitx5-osk-ja-key-helper/`    |
 
-* request otp
-<video src="https://github.com/user-attachments/assets/0f7df9d6-1c26-4319-ab22-613471dd0e3f"></video>
-
-* request password
-<video src="https://github.com/user-attachments/assets/a822b556-18f0-4d8d-a197-6b9a4e060db4"></video>
-
-See [CHANGELOG.md](CHANGELOG.md) for changes since `0.1.0`.
-
-## Features
-
-* Works under various Wayland compositors and X11 (tested only in XWayland).
-* Communicates with Fcitx 5 via `dbus` for key press events.
-* Can be used on the KDE lock screen and login screen (SDDM) with the help of Fcitx 5 Osk Kwin Launcher.
-* Support rotation detection, and use different layouts for landscape and portrait orientations.
-* Support custom layouts and keys.
-* Support theming.
-* Support dock and float mode.
-* Support manual mode, a quick action bar, combo mode, repeat actions, and custom actions.
-
-## Fcitx 5 Osk Kwin Launcher
-
-Fcitx 5 Osk Kwin Launcher is a critical component that enables Fcitx 5 Osk to function properly on the KDE lock screen and login screen. It initializes Fcitx 5 Osk based on the current context:
-
-* **After login or unlock:** Starts Fcitx 5 with `WAYLAND_SOCKET` and launches Fcitx 5 Osk in normal mode.
-* **On the unlock screen:** Starts Fcitx 5 Osk with `WAYLAND_SOCKET` and toggles it based on the KWin virtual keyboard visibility signal. In both the unlock and login screens, only surfaces created with `zwp_input_panel_v1` can be shown. Therefore, Fcitx 5 Osk must be launched with `WAYLAND_SOCKET` and communicate directly with KWin using `zwp_input_method_v1`.
-* **On the login screen (SDDM):** Starts with the `--sddm` option, skipping communication with the FDO service (which is not yet available). Fcitx 5 Osk behaves similarly to how it does on the unlock screen.
-
-This launcher listens for KWin signals and shows the virtual keyboard when KWin's tablet mode is on. You can enable the `Ignore Fcitx Show` option in the settings to prevent the virtual keyboard from appearing when you click an input field with the mouse.
-
-### **Experimental** KWin Effect Plugin
-
-For those people who doesn't want KWin's tablet mode, they can try this plugin which help showing the virtual keyboard with touch event. This plugin isn't built by default. You should add `-D BUILD_KWIN_PLUGIN=YES` to `cmake` to enable building this plugin. Like:
+設定フォルダも別なので、オリジナルの設定は引き継がれません。必要ならコピーしてください。
 
 ```bash
-cmake -D BUILD_KWIN_PLUGIN=YES -B build -S .
+cp -r ~/.config/fcitx5-osk ~/.config/fcitx5-osk-ja
 ```
 
-***Important***: This plugin is built into two `so` files. I don't know if it needs to be built again each time KWin is updated. Also, I don't know it will crash a new version of KWin or not.
+> **同時インストールの注意**
+>
+> - ファイルは共存できますが、KDE の「仮想キーボード」で選べるのは 1 つだけです。
+> - Key Helper は両方動かすこともできますが、使わない方は止めておくのがおすすめです（`sudo systemctl disable --now fcitx5-osk-key-helper`）。
+> - 実験的な KWin エフェクトプラグイン（`-D BUILD_KWIN_PLUGIN=YES`）は名前を変えていません。オリジナルと両方でプラグインをビルド・インストールすると上書きし合います。
 
-## Fcitx 5 Osk Key Helper
+---
 
-Since fcitx5 doesn't forward modifier events correctly on Wayland, uppercase letters cannot be input. I have submitted a [PR fcitx/fcitx5#1292](https://github.com/fcitx/fcitx5/pull/1292), but it looks like it won't be merged. So, I came up a workaround: create a keyboard with evdev and use this keyboard to handle modifier events. This is what `fcitx5-osk-key-helper` does.
+## 主な機能
 
-### Caveat
+- Wayland の各種コンポジタと X11（XWayland で確認）で動作
+- D-Bus 経由で Fcitx 5 にキー入力を送信
+- KDE のロック画面・ログイン画面（SDDM）でも使用可能（Kwin ランチャー使用時）
+- 画面の回転を検出し、横画面・縦画面で別のレイアウトを使用
+- レイアウト・キー・テーマを自由にカスタマイズ可能
+- ドック表示／フロート表示
+- クイックアクションバー、コンボモード、リピート、カスタムアクション
 
-Creating a keyboard with evdev requires root privileges, and it may not be safe to expose a universal keyboard D-Bus API to user space. Therefore, fcitx5-osk-key-helper will handle modifier keycodes by default.
+> オリジナル作者は KWin 6（Wayland / XWayland）でのみ動作確認しています。
 
-## Build and Installation
+### 構成コンポーネント
 
-### Arch Linux
+| 名前                          | 役割                                                                                                                                                                       |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fcitx5-osk-ja`               | キーボード本体                                                                                                                                                             |
+| `fcitx5-osk-ja-key-helper`    | Shift などの修飾キーを evdev 経由で送るヘルパー（root 権限の systemd サービス）。Wayland では Fcitx 5 が修飾キーを正しく転送しないため、これが無いと大文字が入力できません |
+| `fcitx5-osk-ja-kwin-launcher` | KWin と連携して、ログイン後・ロック画面・SDDM でキーボードを起動・表示する                                                                                                 |
 
-Packages are available in the AUR: [fcitx5-osk-git](https://aur.archlinux.org/packages/fcitx5-osk-git) and [fcitx5-osk-kwin-launcher-git](https://aur.archlinux.org/packages/fcitx5-osk-kwin-launcher-git).
+---
 
-### Manual
+## Ubuntu / Kubuntu へのインストール
 
-* build
+### かんたんインストール（おすすめ）
+
 ```bash
+git clone https://github.com/jikantoki/fcitx5-osk-ja.git
+cd fcitx5-osk-ja
+./install.sh --install
+```
+
+`install.sh` は **deb パッケージ `dist/fcitx5-osk-ja.deb` を作る**スクリプトです。`--install` を付けると、作った deb を `apt` でインストールするところまで自動で行います（途中で sudo のパスワードを聞かれます）。
+
+root でも実行できます（`sudo ./install.sh --install`）。root のときは sudo を使わずにそのまま実行するので、
+root でしか書き込めない場所（Motivnavi OS の `/motivnavi/fcitx5-osk-ja` など）にソースを置いた場合や、
+Motivnavi Updater からのワンクリックインストールでも、途中で止まらずに最後まで進みます。
+
+1. ビルドに必要なパッケージを apt で入れる
+2. Rust（rustup の stable）を入れて最新にする（cmake が 4.1 未満なら snap 版を入れる）
+3. ソースをビルドし、`dist/fcitx5-osk-ja.deb` を作る
+4. `--install` 付きのとき: その deb を `apt` でインストールする（Key Helper サービスも自動で有効になる）
+
+deb には、アイコン用フォント（Symbols Nerd Font）と、アップデート用のコマンド・メニュー項目も入っています。初回のビルドは時間がかかります。ソースに変更が無ければ、2回目以降はビルドをスキップします。
+
+インストールが終わったら、次の設定をしてください。
+
+1. **システム設定 → キーボード → 仮想キーボード** で **「Fcitx 5 Osk JA Kwin Launcher」** を選ぶ
+2. Fcitx 5 の入力メソッド設定で、キーボードレイアウトを **「日本語」** にする
+3. 一度ログアウトして、ログインし直す
+
+### deb を作るだけ
+
+```bash
+./install.sh
+```
+
+`dist/fcitx5-osk-ja.deb` ができます。他の PC に持っていって、`sudo apt install ./fcitx5-osk-ja.deb` でインストールすることもできます。
+
+### アップデート
+
+次のどちらかで、ソースを `git pull` して新しい版があれば deb を作り直し、apt で入れ替えます（`./install.sh --update --install` と同じです）。
+
+- ターミナルで `fcitx5-osk-ja-update` を実行
+- アプリメニューの **「Fcitx 5 Osk JA を更新」** をクリック
+
+ソースのフォルダに書き込めない場合（root 所有の `/motivnavi` など）は、自動で sudo を付けて実行します。
+Motivnavi OS では、Motivnavi Updater からもアップデートできます。
+
+新しい版は、ログインし直すと反映されます。
+
+> アップデートは clone したフォルダの `origin` から取得します（`git remote -v` で確認できます）。
+
+### `install.sh` のオプション
+
+| コマンド | 内容 |
+|---|---|
+| `./install.sh` | `dist/fcitx5-osk-ja.deb` を作る |
+| `./install.sh --install` | deb を作って apt でインストールする |
+| `./install.sh --update` | `git pull` してから deb を作る |
+| `./install.sh --update --install` | `git pull` → deb 作成 → インストール |
+| `./install.sh --force` | バージョンが同じでも作り直す（`--install` と一緒なら入れ直しも） |
+| `./install.sh --src <フォルダ>` | ソースの場所を指定する |
+
+### アンインストール
+
+```bash
+sudo apt remove fcitx5-osk-ja
+```
+
+### オリジナル版（fcitx5-osk）からの移行
+
+オリジナルの fcitx5-osk を cmake で入れていた環境では、fcitx5-osk-ja の deb をインストールしたあとに、移行スクリプトを実行してください。
+
+```bash
+sudo ./tools/migrate-from-fcitx5-osk.sh                          # 何が変わるかを表示するだけ
+sudo ./tools/migrate-from-fcitx5-osk.sh --apply                  # 実行する
+sudo ./tools/migrate-from-fcitx5-osk.sh --apply --include-home   # 既存ユーザーの設定も移行する
+```
+
+- オリジナル版が入れたファイル（`/usr/local` など）を削除します
+- `/etc/skel`・`/etc/xdg`・`/etc/sddm.conf.d`・`/usr/share/kubuntu-default-settings` などにある設定の参照を fcitx5-osk-ja 用に書き換えます（パッケージ管理下のファイルは書き換えません）
+- 新規ユーザーの既定の仮想キーボードを「Fcitx 5 Osk JA Kwin Launcher」にします（`/etc/xdg/kwinrc`、あれば `/etc/skel/.config/kwinrc`）
+- 変更・削除したファイルは `/var/backups/fcitx5-osk-ja-migrate/<日時>/` に残ります
+
+### 手動でビルドする（cmake）
+
+deb を使わずに、`/usr/local` に直接インストールする方法です。
+
+```bash
+# 1. 必要なパッケージ（cmake は 4.1 以上。古い場合は sudo snap install cmake --classic）
+sudo apt install -y build-essential cmake git pkg-config libssl-dev clang \
+  curl unzip fontconfig fcitx5 fcitx5-mozc kde-config-fcitx5
+
+# 2. Rust（Rust 1.100 でビルドを確認。1.97 ではコンパイルエラーになります）
+sudo apt install -y rustup
+rustup default stable
+rustup update stable
+
+# 3. ビルドとインストール
 cmake -B build -S .
 cmake --build build
+sudo cmake --install build --component Fcitx5Osk
+sudo cmake --install build --component Fcitx5OskKwinLauncher
+sudo systemctl daemon-reload
+sudo systemctl enable --now fcitx5-osk-ja-key-helper
+
+# 4. アイコン用フォント（Symbols Nerd Font）
+mkdir -p ~/.local/share/fonts/NerdFontsSymbolsOnly
+curl -fL -o /tmp/sym.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip
+unzip -o /tmp/sym.zip '*.ttf' -d ~/.local/share/fonts/NerdFontsSymbolsOnly
+fc-cache -f
 ```
 
-* install
+その後の設定は「かんたんインストール」と同じです。
+
+> **Ubuntu 特有の注意:** `-D CMAKE_INSTALL_PREFIX=/usr` を指定してビルドすると、Debian/Ubuntu では systemd ユニットが `/usr/lib/x86_64-linux-gnu/systemd/system` に入ってしまい、サービスが見つからなくなります。`/usr` に入れたい場合は `-D CMAKE_INSTALL_LIBDIR=lib` も付けてください。
+
+> 手動インストールと deb を両方入れると二重になります。deb に切り替えるときは、先に `sudo xargs rm -v < build/install_manifest_Fcitx5Osk.txt`（ランチャーは `install_manifest_Fcitx5OskKwinLauncher.txt`）で手動インストール分を消してください。
+
+### 手動で表示する
 
 ```bash
-cmake --install build --component Fcitx5Osk
-
-# install kwin launcher
-cmake --install build --component Fcitx5OskKwinLauncher
+fcitx5-osk-ja force-show
 ```
 
-## Usage
+アプリケーションメニューの「Fcitx 5 Osk JA」からも起動できます。
 
-### Enable Fcitx5 Osk Key Helper
+---
 
-```bash
-# enable and start
-sudo systemctl enable --now fcitx5-osk-key-helper
-```
+## JIS 配列について
 
-### Use without Fcitx5 Osk Key Helper
+横画面では、**内蔵の JIS 配列レイアウト**（`jis-landscape`）が標準で使われます。設定ファイルは必要ありません。
 
-You can use a patched `fcitx5` and add/set `modifier_workaround_keycodes` in `${HOME}/.config/fcitx5-osk/config.toml` to empty.
+- 1段目: `半/全` `1`〜`0` `-` `^` `¥` `BS`
+- 2段目: `Tab` `Q`〜`P` `@` `[` `Enter`
+- 3段目: `Caps` `A`〜`L` `;` `:` `]` `Enter`
+- 4段目: `Shift` `Z`〜`/` `\(ろ)` `Shift`
+- 5段目: `Esc` `Ctrl` `Super` `Alt` `無変換` `Space` `変換` `かな` `Ctrl` `← ↑ ↓ →`
+
+**前提:** Fcitx 5 の入力メソッド設定で、キーボードレイアウトを **「日本語」** にしてください。キーコードを jp レイアウト基準で指定しているので、US レイアウトのままだと `@` や `:` などがずれます。
+
+縦画面は、オリジナルと同じ内蔵の `default-portrait` レイアウトを使います。
+
+### US 配列に戻したいとき
+
+US 配列のレイアウトは `us-landscape` という名前で入っています（`/etc/xdg/fcitx5-osk-ja/layouts/us-landscape.toml`）。`~/.config/fcitx5-osk-ja/config.toml` に次のように書くと切り替わります。
+
 ```toml
-modifier_workaround_keycodes = []
-```
+# すべての入力メソッドで US 配列にする
+default_landscape_layout = "us-landscape"
 
-### KWin (Wayland)
-
-To enable Fcitx 5 Osk Kwin Launcher:
-Go to **System Settings** → **Keyboard** → **Virtual Keyboard**, and select **"Fcitx 5 Osk Kwin Launcher"**.
-
-### SDDM
-
-Add the input method option with the value `"fcitx5-osk-kwin-launcher --sddm"` to `kwin_wayland`.
-Here is an example configuration file:
-
-```ini
-# /etc/sddm.conf.d/rootless.conf
-[General]
-DisplayServer=wayland
-GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
-
-[Wayland]
-CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod "fcitx5-osk-kwin-launcher --sddm"
-```
-
-* For a manual build, `/usr/local/bin` might not be in `$PATH` of the process of `SDDM`, use the absolute path of `fcitx5-osk-kwin-launcher`:
-
-```ini
-# /etc/sddm.conf.d/rootless.conf
-[General]
-DisplayServer=wayland
-GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
-
-[Wayland]
-CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod "/usr/local/bin/fcitx5-osk-kwin-launcher --sddm"
-```
-
-### Open Keyboard Manually
-
-A key event from a keyboard of evdev will make `fcitx5` to hide a virtual keyboard. If the indicator is set to be `AlwaysOff`, and you want to open the keyboard. You can use this command.
-
-```bash
-fcitx5-osk force-show
-```
-
-Or you can click "Fcitx 5 Osk" in the application menu directly. You can add a quick launcher in the panel too.
-
-### Custom Layouts, Keys, Themes and Actions
-
-You can create your own layouts, keys, themes and custom actions, and specify the layout to be used in a specified input method. Keys are organized by a key set.
-
-* By default, `fcitx5-osk` will search toml files in `fcitx5-osk/layouts`, `fcitx5-osk/key_sets`, `fcitx5-osk/themes` and `fcitx5-osk/custom_actions` under `$XDG_CONFIG_DIRS` and `$XDG_CONFIG_HOME`. If `$XDG_CONFIG_HOME` is not set, `$HOME/.config` will be used. If there are multiple configs with the same name, the latter one has higher priority.
-
-* Set the layout to be used 
-```toml
-# Layouts to be used in landscape view. If no layout is specified for an input method, the builtin one will be used.
+# 入力メソッドごとに変える場合（名前はキーボード上のドロップダウンに出るもの）
 [im_layout_mapping.landscape]
-# custom-layout-for-rime-landscape is the name of the layout. rime is the input method name. You can find it in the input method drop-down list of `fcitx5-osk`.
-
-rime = "custom-layout-for-rime-landscape"
-
-# Layouts to be used in portrait view. If no layout is specified for an input method, the builtin one will be used.
-[im_layout_mapping.portrait]
-# custom-layout-for-rime-portrait is the name of the layout. rime is the input method name. You can find it in the input method drop-down list of `fcitx5-osk`.
-rime = "custom-layout-for-rime-portrait"
+keyboard-us = "us-landscape"
 ```
 
-#### Layout Toml File
+`キー = 値` の行は、`[ ]` で始まる行より上に書いてください。
 
-You can copy and edit the [builtin layout](assets/layouts/default-landscape.toml) to create your own. Here are some explanations:
+---
 
-```toml
-# The name of the layout, it should be unique globally.
-name = "Some Unique Name"
+## SDDM（ログイン画面）で使う
 
-# The space between each row.
-spacing = 1
+`/etc/sddm.conf.d/` に設定ファイルを作り、`kwin_wayland` に入力メソッドを指定します。`/usr/local` にインストールした場合は、SDDM の `PATH` に `/usr/local/bin` が含まれないことがあるので、**絶対パス**で書いてください。
 
-# A row of the keys, the length or the width is a number of unit. The unit will be dynamic calculated.
-[[elements]]
-# The height of this row.
-height = 6
-# The space between each element of the row.
-spacing = 1
-# There are two kinds of element in a row: key and padding. A key is a name starting with 'k' and a padding is 'p'. You can specify the width of the element with ':number'. By default, the width of a key is 8, and the width of a padding is 1.
-elements = ["p:3", "k21", "k22", "k23", "k24", "k25", "k26", "k27", "k28", "k29:12", "p:3"]
+```ini
+# /etc/sddm.conf.d/rootless.conf
+[General]
+DisplayServer=wayland
+GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
 
-# Specify which key is to be used
-[key_mappings]
-# If no key set is specify, it will be found in the builtin one.
-k21 = "k_grave_accent"
-# k_grave_accent from a key set named "custom_key_set"
-k22 = "custom_key_set:k_grave_accent"
+[Wayland]
+CompositorCommand=kwin_wayland --drm --no-lockscreen --no-global-shortcuts --locale1 --inputmethod "/usr/local/bin/fcitx5-osk-ja-kwin-launcher --sddm"
 ```
 
-#### Key Set Toml File
+---
 
-You can copy and edit the [builtin key set](assets/key_sets/default.toml) to create your own. Here are some explanations:
-```toml
-# The name of the key set, it should be unique globally.
-name = "Some Unique Name"
+## カスタマイズ
 
-# Specify "k_escape"
-[keys.k_escape]
-# The primary form: keysym is 0xff1b, symbol to be shown is "Esc", keycode(x11 variant) is 9
-p = {ks = 0xff1b, s = "Esc", kc = 9}
+レイアウト・キーセット・テーマ・カスタムアクションは TOML ファイルで定義します。次の場所にある設定が読み込まれます。
 
-# Specify "k_p_four"
-[keys.k_p_four]
-# The primary form: character is '4' (symbol and keysym will be generated by the character automatically), keycode(x11 variant) is 13
-p = {c = "4", kc = 13}
-[[keys.k_p_four.s]]
-# The first secondary form: character is '$', keycode(x11 variant) is -13 (Negative keycode means shift should be pressed)
-c = "$"
-kc = -13
-[[keys.k_p_four.s]]
-# The second secondary form: character is '/', keycode(x11 variant) is 61
-c = "/"
-kc = 61
-[[keys.k_p_four.s]]
-# The third secondary form: character is '?', keycode(x11 variant) is -61
-c = "?"
-kc = -61
-```
+- `$XDG_CONFIG_HOME/fcitx5-osk-ja/`（既定は `~/.config/fcitx5-osk-ja/`）
+- `$XDG_CONFIG_DIRS/fcitx5-osk-ja/`（既定は `/etc/xdg/fcitx5-osk-ja/`）
 
-#### Theme Toml File
+フォルダは `layouts/`, `key_sets/`, `themes/`, `custom_actions/` に分かれています。カスタムアクションのひな形は `/usr/share/fcitx5-osk-ja/custom_actions/`（手動ビルドの場合は `/usr/local/share/...`）に入ります。
 
-Here is an example.
+- レイアウトのひな形: [assets/layouts/jis-landscape.toml](assets/layouts/jis-landscape.toml)（JIS）、[assets/layouts/us-landscape.toml](assets/layouts/us-landscape.toml)（US）
+- キーセットのひな形: [assets/key_sets/default.toml](assets/key_sets/default.toml)
+- 書式の詳しい説明は [README_ORIGINAL.md](README_ORIGINAL.md) の「Custom Layouts, Keys, Themes and Actions」を参照してください（パスの `fcitx5-osk` は `fcitx5-osk-ja` に読み替えてください）
 
-```toml
-name = "Breeze Light"
+キーセットでよく使う項目:
 
-# all fields of `palette` must be provided
-[palette]
-background = "#ffffff"
-text = "#232629"
-primary = "#3daee9"
-success = "#27ae60"
-danger = "#da4453"
-warning = "#f67400"
+| 項目 | 意味                                                                        |
+| ---- | --------------------------------------------------------------------------- |
+| `c`  | 入力する文字                                                                |
+| `ks` | X の keysym（例: `0xff0d` = Enter）                                         |
+| `s`  | キーに表示する文字                                                          |
+| `kc` | X11 キーコード（負の値は Shift 同時押し）                                   |
+| `f`  | フォント名（`"fcitx5 osk nerd"` は `default_nerd_font` で指定したフォント） |
 
-# This is the extended palette for advanced settings
-# all fields of `extended_palette` must be provided if you add the `extended_palette` section
-[extended_palette]
-is_dark = false
+---
 
-[extended_palette.background.base]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.background.weak]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.background.strong]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.background.weakest]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.background.weaker]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.background.neutral]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.background.stronger]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.background.strongest]
-color = "#ffffff"
-text = "#232629"
+## トラブルシューティング
 
-[extended_palette.primary.base]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.primary.weak]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.primary.strong]
-color = "#ffffff"
-text = "#232629"
+| 症状 | 対処 |
+| --- | --- |
+| Enter・矢印・ツールバーのアイコンが豆腐（□）になる | deb 版はフォント同梱なので、ログインし直す。手動ビルドの場合は Symbols Nerd Font を入れる（`fc-list : family \| grep -i nerd` で確認） |
+| 大文字や記号（Shift が必要な文字）が入力できない | Key Helper が動いているか確認（`systemctl status fcitx5-osk-ja-key-helper`） |
+| `install.sh` で `ソースが見つかりません` と出る | リポジトリのフォルダの中で `./install.sh --install` を実行する |
+| `install.sh` で `git pull に失敗しました` と出る | ソースフォルダに手元の変更がある。`git status` で確認して、コミットするか元に戻す |
+| Rust のビルドで `the ? operator can only be used in an async block that returns Result` と出る | Rust が古い。`rustup update stable` で更新する |
+| JIS 配列で `@` `:` などがずれる | Fcitx 5 のキーボードレイアウトを「日本語」にする |
+| オリジナル版のキーボードが出てくる | KDE の「仮想キーボード」で「Fcitx 5 Osk JA Kwin Launcher」を選び直し、ログインし直す |
 
-[extended_palette.secondary.base]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.secondary.weak]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.secondary.strong]
-color = "#ffffff"
-text = "#232629"
+---
 
-[extended_palette.success.base]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.success.weak]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.success.strong]
-color = "#ffffff"
-text = "#232629"
+## ライセンス
 
-[extended_palette.danger.base]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.danger.weak]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.danger.strong]
-color = "#ffffff"
-text = "#232629"
+MIT License（[LICENSE](LICENSE)）。オリジナルの著作権は [fortime](https://github.com/fortime/fcitx5-osk) さんにあります。
 
-[extended_palette.warning.base]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.warning.weak]
-color = "#ffffff"
-text = "#232629"
-[extended_palette.warning.strong]
-color = "#ffffff"
-text = "#232629"
-```
-
-#### Custom Action Toml File
-
-Custom actions are shown in the quick action bar. Put action files under `${XDG_CONFIG_HOME:-$HOME/.config}/fcitx5-osk/custom_actions`, then enable them in `${XDG_CONFIG_HOME:-$HOME/.config}/fcitx5-osk/config.toml`:
-
-```toml
-quick_action_bar_state = "On"
-custom_actions = ["Ctrl+"]
-```
-
-`quick_action_bar_state` can be `Off`, `On` or `Toggle`. The action name in `custom_actions` must match the `name` field in the action file.
-
-Here is a static action that provides `Ctrl+C` and `Ctrl+V` candidates:
-
-```toml
-# ~/.config/fcitx5-osk/custom_actions/ctrl_plus.toml
-name = "Ctrl+"
-
-[action]
-type = "Static"
-
-[[action.groups]]
-[[action.groups.keys]]
-type = "Key"
-ks = 0xffe3
-s = "Ctrl"
-kc = 37
-
-[[action.groups.keys]]
-type = "Key"
-c = "c"
-kc = 54
-
-[[action.groups]]
-[[action.groups.keys]]
-type = "Key"
-ks = 0xffe3
-s = "Ctrl"
-kc = 37
-
-[[action.groups.keys]]
-type = "Key"
-c = "v"
-kc = 55
-```
-
-Each `[[action.groups]]` entry creates one candidate. Each key in a group has `type = "Key"` and uses the same fields as a key set key value:
-
-* `c`: a character, such as `"c"` or `"v"`.
-* `ks`: an X keysym value, such as `0xffe3` for Ctrl.
-* `s`: the symbol shown in the UI.
-* `kc`: the X11 keycode. A negative keycode means Shift should be pressed.
-* `f`: optional font name or font id.
-
-You can also use `type = "Release"` to release the last pressed key in combo mode, or `type = "ReleaseAll"` to release all pressed keys.
-
-##### `HttpApi` Custom Actions
-
-`HttpApi` custom actions are enabled by default at build time. They request candidates from an HTTP endpoint, then show the returned prompts or key groups in the candidate area. Use this for integrations such as OTP or password providers. The [otp-push](https://github.com/fortime/otp-push) project provides a server for requesting and returning OTP or secret values for this workflow.
-
-Installed packages may provide template actions, [otp.toml](pkg/share/fcitx5-osk/custom_actions/otp.toml) and [pw.toml](pkg/share/fcitx5-osk/custom_actions/pw.toml), under `/usr/share/fcitx5-osk/custom_actions/`. Link the template into your user config folder and put private values in a drop-in directory next to the linked file:
-
-```bash
-mkdir -p ~/.config/fcitx5-osk/custom_actions
-ln -s /usr/share/fcitx5-osk/custom_actions/otp.toml ~/.config/fcitx5-osk/custom_actions/otp.toml
-mkdir -p ~/.config/fcitx5-osk/custom_actions/otp.toml.d
-```
-
-Then create a drop-in file to override user-specific settings:
-
-```toml
-# ~/.config/fcitx5-osk/custom_actions/otp.toml.d/user.toml
-name = "user-overridden-name"
-
-[action.headers.auth]
-X-Api-Token = ["your-token"]
-```
-
-Finally, enable the action in `${XDG_CONFIG_HOME:-$HOME/.config}/fcitx5-osk/config.toml`:
-
-```toml
-quick_action_bar_state = "On"
-custom_actions = ["OTP"]
-```
-
-For password-style actions that need encrypted responses, use the same pattern with the `pw.toml` template:
-
-```bash
-ln -s /usr/share/fcitx5-osk/custom_actions/pw.toml ~/.config/fcitx5-osk/custom_actions/pw.toml
-mkdir -p ~/.config/fcitx5-osk/custom_actions/pw.toml.d
-```
-
-```toml
-# ~/.config/fcitx5-osk/custom_actions/pw.toml.d/user.toml
-name = "user-overridden-name"
-
-[action.headers.auth]
-X-Api-Token = ["your-token"]
-```
-
-A minimal `HttpApi` action looks like this:
-
-```toml
-name = "OTP"
-
-[action]
-type = "HttpApi"
-
-[action.headers.auth]
-X-Api-Token = ["your-token"]
-
-[action.targets.0]
-headers_name = "auth"
-url = "https://example.com/api/request"
-method = "POST"
-need_enter = true
-```
-
-The action supports shared `headers`, `queries` and `bodies` tables. Each target can select them with `headers_name`, `query_name` and `body_name`. `need_enter` appends Enter to returned key groups, `need_mask` hides candidate text, and `need_encrypt` requests an encrypted secret flow and always masks the secret.
-
-The HTTP response is JSON with these fields:
-
-```json
-{
-  "prompts": [[["Label", null]]],
-  "groups": [],
-  "secret": null,
-  "next": null
-}
-```
-
-`prompts` shows text candidates, `groups` returns key groups using the same `type = "Key"` shape as static custom actions, `secret` returns encrypted text for `need_encrypt = true`, and `next` makes the action continue polling with `GET`.
-
-## Troubleshoot
-
-### `GTK_IM_MODULE` and `QT_IM_MODULE` are set
-
-With `QT_IM_MODULE` set, the virtual keyboard won't be shown in the SDDM login screen and the KDE lock screen. In a distribution with `im-config` installed, like Debian 13, it will set `*_IM_MODULE` by default. You can set `IM_CONFIG_DEFAULT_MODE` to `none` in `/etc/default/im-config`.
-
-## Issues
-
-* [PR fcitx/fcitx5#1292](https://github.com/fcitx/fcitx5/pull/1292) is needed to input correctly in latin mode of Fcitx 5.
-
-## TODO
-
-* [ ] integrated with xcbcommon.
-* [x] iced 14.
-* [ ] add `RefreshRequest` for our widgets.
-* [ ] use `RefreshRequest` to implement long press event?
-* [x] support custom theme
-* [ ] support custom shape of key
-* [x] support repeat key mode
+アイコン（`assets/icons/fcitx5-osk.svg`）の「あ」の字形は [Noto Sans CJK JP](https://github.com/notofonts/noto-cjk)（SIL Open Font License 1.1）から作成しています。オリジナルのアイコンは `assets/icons/fcitx5-osk-original.svg` に残しています。

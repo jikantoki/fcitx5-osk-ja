@@ -39,7 +39,7 @@ mod dbus;
 mod kwin;
 
 #[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
+#[command(name = "fcitx5-osk-ja-kwin-launcher", version, about, long_about = None)]
 struct Args {
     /// Force the program running on wayland.
     #[arg(long, default_missing_value = "true")]

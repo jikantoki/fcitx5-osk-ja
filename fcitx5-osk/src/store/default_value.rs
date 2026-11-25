@@ -1,5 +1,5 @@
 pub const DEFAULT_LANDSCAPE_KEY_AREA_LAYOUT_TOML: &str =
-    include_str!("../../../assets/layouts/default-landscape.toml");
+    include_str!("../../../assets/layouts/jis-landscape.toml");
 
 pub const DEFAULT_PORTRAIT_KEY_AREA_LAYOUT_TOML: &str =
     include_str!("../../../assets/layouts/default-portrait.toml");

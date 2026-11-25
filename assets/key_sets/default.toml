@@ -511,3 +511,104 @@ s = "󰜴"
 ks = 0x08fd
 kc = 114
 f = "fcitx5 osk nerd"
+
+# ---- JIS配列用のキー（fcitx5-osk-ja で追加） ----
+
+[keys.k_jis_zenkaku_hankaku]
+p = {ks = 0xff2a, s = "半/全", kc = 49}
+
+[keys.k_jis_two]
+p = {c = "2", kc = 11}
+[[keys.k_jis_two.s]]
+c = "\""
+kc = -11
+
+[keys.k_jis_six]
+p = {c = "6", kc = 15}
+[[keys.k_jis_six.s]]
+c = "&"
+kc = -15
+
+[keys.k_jis_seven]
+p = {c = "7", kc = 16}
+[[keys.k_jis_seven.s]]
+c = "'"
+kc = -16
+
+[keys.k_jis_eight]
+p = {c = "8", kc = 17}
+[[keys.k_jis_eight.s]]
+c = "("
+kc = -17
+
+[keys.k_jis_nine]
+p = {c = "9", kc = 18}
+[[keys.k_jis_nine.s]]
+c = ")"
+kc = -18
+
+[keys.k_jis_zero]
+p = {c = "0", kc = 19}
+
+[keys.k_jis_minus]
+p = {c = "-", kc = 20}
+[[keys.k_jis_minus.s]]
+c = "="
+kc = -20
+
+[keys.k_jis_caret]
+p = {c = "^", kc = 21}
+[[keys.k_jis_caret.s]]
+c = "~"
+kc = -21
+
+[keys.k_jis_yen]
+p = {c = "\\", s = "¥", kc = 132}
+[[keys.k_jis_yen.s]]
+c = "|"
+kc = -132
+
+[keys.k_jis_at]
+p = {c = "@", kc = 34}
+[[keys.k_jis_at.s]]
+c = "`"
+kc = -34
+
+[keys.k_jis_open_bracket]
+p = {c = "[", kc = 35}
+[[keys.k_jis_open_bracket.s]]
+c = "{"
+kc = -35
+
+[keys.k_jis_semicolon]
+p = {c = ";", kc = 47}
+[[keys.k_jis_semicolon.s]]
+c = "+"
+kc = -47
+
+[keys.k_jis_colon]
+p = {c = ":", kc = 48}
+[[keys.k_jis_colon.s]]
+c = "*"
+kc = -48
+
+[keys.k_jis_close_bracket]
+p = {c = "]", kc = 51}
+[[keys.k_jis_close_bracket.s]]
+c = "}"
+kc = -51
+
+[keys.k_jis_ro]
+p = {c = "\\", s = "\\", kc = 97}
+[[keys.k_jis_ro.s]]
+c = "_"
+kc = -97
+
+[keys.k_jis_muhenkan]
+p = {ks = 0xff22, s = "無変換", kc = 102}
+
+[keys.k_jis_henkan]
+p = {ks = 0xff23, s = "変換", kc = 100}
+
+[keys.k_jis_hiragana_katakana]
+p = {ks = 0xff27, s = "かな", kc = 101}
